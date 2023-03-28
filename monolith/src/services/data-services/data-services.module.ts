@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { PostgresqlDataServicesModule } from '../../frameworks/data-services/postgresql/postgresql-data-services.modules';
+import { PostgresqlDataServicesModule } from '../../frameworks/data-services/typeorm/typeorm-data.module';
 
 @Module({
   imports: [PostgresqlDataServicesModule],
