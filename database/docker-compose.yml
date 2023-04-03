@@ -1,0 +1,23 @@
+version: "3.9"
+services:
+  database:
+    container_name: database
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: psql -U postgres -q -d postgres -c "SELECT 'ready';"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+volumes:
+  db-data:

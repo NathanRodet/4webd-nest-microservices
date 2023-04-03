@@ -1,0 +1,76 @@
+version: '3'
+services:
+  auth-microservice:
+    container_name: auth-microservice
+    build:
+      context: ./auth-service/
+    environment:
+      - REDIS_HOST=redis
+    ports:
+      - '3100:3000'
+    depends_on:
+      - redis
+    networks:
+      - redis-net
+  events-microservice:
+    container_name: events-microservice
+    build:
+      context: ./events-service/
+    environment:
+      - REDIS_HOST=redis
+    ports:
+      - '3200:3000'
+    depends_on:
+      - redis
+    networks:
+      - redis-net
+  tickets-microservice:
+    container_name: tickets-microservice
+    build:
+      context: ./tickets-service/
+    environment:
+      - REDIS_HOST=redis
+    ports:
+      - '3300:3000'
+    depends_on:
+      - redis
+    networks:
+      - redis-net
+  users-microservice:
+    container_name: users-microservice
+    build:
+      context: ./users-service/
+    environment:
+      - REDIS_HOST=redis
+    ports:
+      - '3400:3000'
+    depends_on:
+      - redis
+    networks:
+      - redis-net
+  redis:
+    image: 'redis:latest'
+    container_name: redis-microservice
+    restart: always
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - 'REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL'
+    labels:
+      kompose.service.type: nodeport
+    command:
+      - redis-server
+      - '--bind'
+      - redis
+      - '--port'
+      - '6379'
+    volumes:
+      - 'redis_data:/usr/local/etc/redis/redis.conf'
+    ports:
+      - '6379:6379'
+    networks:
+      - redis-net
+networks:
+  redis-net: null
+volumes:
+  redis_data:
+    driver: local
