@@ -16,8 +16,6 @@ const microserviceOptions = {
   },
 };
 async function bootstrap() {
-  // const app = await NestFactory.create(AppModule);
-  // await app.listen(3000);
   const app = await NestFactory.createMicroservice(
     AppModule,
     microserviceOptions,
