@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@nestjs/microservices": "^9.4.0"
+  }
+}
