@@ -1,3 +1,6 @@
+# Docker ignore ignores these files when copying over to the new container
+# Will copy .gitignore for now
+
 # compiled output
 /dist
 /node_modules

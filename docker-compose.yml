@@ -1,9 +1,9 @@
 version: '3'
 services:
-  auth-microservice:
-    container_name: auth-microservice
+  magazine-microservice:
+    container_name: magazine-microservice
     build:
-      context: ./auth-service/
+      context: ./magazines-service/
     environment:
       - REDIS_HOST=redis
     ports:
@@ -12,10 +12,10 @@ services:
       - redis
     networks:
       - redis-net
-  events-microservice:
-    container_name: events-microservice
+  book-microservice:
+    container_name: book-microservice
     build:
-      context: ./events-service/
+      context: ./books-service/
     environment:
       - REDIS_HOST=redis
     ports:
@@ -24,33 +24,9 @@ services:
       - redis
     networks:
       - redis-net
-  tickets-microservice:
-    container_name: tickets-microservice
-    build:
-      context: ./tickets-service/
-    environment:
-      - REDIS_HOST=redis
-    ports:
-      - '3300:3000'
-    depends_on:
-      - redis
-    networks:
-      - redis-net
-  users-microservice:
-    container_name: users-microservice
-    build:
-      context: ./users-service/
-    environment:
-      - REDIS_HOST=redis
-    ports:
-      - '3400:3000'
-    depends_on:
-      - redis
-    networks:
-      - redis-net
   redis:
     image: 'redis:latest'
-    container_name: redis-microservice
+    container_name: microservice-redis
     restart: always
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
