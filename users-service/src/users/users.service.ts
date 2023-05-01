@@ -1,5 +1,5 @@
 const argon2 = require('argon2');
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
@@ -29,15 +29,19 @@ export class UsersService {
     return await this.usersRepository.find();
   }
 
-  async findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    const user = await this.usersRepository.findOneBy({ id })
+    if (!user)
+      throw new HttpException({ message: 'User not found.' }, HttpStatus.NOT_FOUND);
+    else
+      return user;
   }
 
-  async update(id: number, UpdatePasswordUserDto: UpdatePasswordUserDto) {
+  async update(id: string, UpdatePasswordUserDto: UpdatePasswordUserDto) {
     return `This action updates a #${id} user`;
   }
 
-  async remove(id: number) {
+  async remove(id: string) {
     return `This action removes a #${id} user`;
   }
 }

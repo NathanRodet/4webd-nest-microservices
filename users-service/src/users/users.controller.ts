@@ -22,17 +22,17 @@ export class UsersController {
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+    return this.usersService.findOne(id);
   }
 
   @Patch(':id')
   @UsePipes(new ValidationPipe({ transform: true }))
   async update(@Param('id') id: string, @Body() UpdatePasswordUserDto: UpdatePasswordUserDto) {
-    return this.usersService.update(+id, UpdatePasswordUserDto);
+    return this.usersService.update(id, UpdatePasswordUserDto);
   }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+    return this.usersService.remove(id);
   }
 }

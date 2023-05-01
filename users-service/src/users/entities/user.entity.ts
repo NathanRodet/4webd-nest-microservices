@@ -21,6 +21,6 @@ export class User {
   @Column("text", { nullable: true, array: true })
   tickets: string[];
 
-  @Column({ default: true })
+  @Column({ default: false })
   is_admin: boolean;
 }
