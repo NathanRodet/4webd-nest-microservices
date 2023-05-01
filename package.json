@@ -1,5 +1,12 @@
 {
   "dependencies": {
-    "@nestjs/microservices": "^9.4.0"
+    "@nestjs/mapped-types": "*",
+    "@nestjs/microservices": "^9.4.0",
+    "pg": "^8.10.0",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.15"
+  },
+  "devDependencies": {
+    "@types/node": "^18.16.3"
   }
 }

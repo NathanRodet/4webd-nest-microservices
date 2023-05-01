@@ -1,4 +1,6 @@
-import { Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+
+@Entity()
 export class Event {
     @PrimaryGeneratedColumn("uuid")
     id: string;
@@ -10,12 +12,12 @@ export class Event {
     description: string;
   
     @Column()
-    ticketsDisponible: number;
-
-    @Column()
     dateDebut: Date;
     
     @Column()
     dateFin: Date;
+
+    @Column()
+    ticketsDisponible: number;
 }
 export default Event;
