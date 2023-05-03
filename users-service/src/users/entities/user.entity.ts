@@ -18,9 +18,6 @@ export class User {
   @Column({ nullable: false, select: false })
   password: string;
 
-  @Column("text", { nullable: true, array: true })
-  tickets: string[];
-
   @Column({ default: false })
   is_admin: boolean;
 }
