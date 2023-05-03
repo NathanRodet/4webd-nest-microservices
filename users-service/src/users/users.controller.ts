@@ -1,17 +1,16 @@
 
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Patch } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordUserDto } from './dto/update-user.dto';
+import { UUID } from './dto/params-user.dto';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
 
   @Post()
-  @UsePipes(new ValidationPipe({ transform: true }))
   async create(@Body() createUserDto: CreateUserDto) {
-
     return this.usersService.create(createUserDto);
   }
 
@@ -21,18 +20,17 @@ export class UsersController {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+  async findOneById(@Param() id: UUID) {
+    return this.usersService.findOneById(id.id);
   }
 
   @Patch(':id')
-  @UsePipes(new ValidationPipe({ transform: true }))
-  async update(@Param('id') id: string, @Body() UpdatePasswordUserDto: UpdatePasswordUserDto) {
-    return this.usersService.update(id, UpdatePasswordUserDto);
+  async update(@Param() id: UUID, @Body() updatePasswordUserDto: UpdatePasswordUserDto) {
+    return this.usersService.updatePassword(id.id, updatePasswordUserDto);
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  async remove(@Param() id: UUID) {
+    return this.usersService.remove(id.id);
   }
 }
