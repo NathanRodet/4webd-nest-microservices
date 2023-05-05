@@ -29,39 +29,36 @@ export class EventService {
     return await this.eventsRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} event`;
+  async findOneById(id: string) {
+    const event = await this.eventsRepository.findOneBy({ id });
+    if (!event)
+      throw new HttpException({ message: 'Event not found.' }, HttpStatus.NOT_FOUND);
+    else
+      return event;
   }
 
-  update(id: number, updateEventDto: UpdateEventDto) {
-    return `This action updates a #${id} event`;
+  async update(id: string, updateEventDto: UpdateEventDto) {
+    const event = await this.eventsRepository.findOneBy({ id });
+    if (!event)
+      throw new HttpException({ message: 'Event not found.' }, HttpStatus.NOT_FOUND);
+    else {
+      const eventData = {
+        titre: updateEventDto.titre,
+        description: updateEventDto.description,
+        dateDebut: updateEventDto.DateDebut,
+        dateFin: updateEventDto.DateFin,
+        ticketsDisponible: updateEventDto.ticketsDisponible,
+      }
+      return await this.eventsRepository.update({ id }, eventData);
+    }
   }
 
-  async remove(id: string): Promise<void> {
-
-
-      const event = await this.eventsRepository.findOneBy({ id })
-      if (!event) {
-        throw new HttpException({ message: 'Event not found' }, HttpStatus.NOT_FOUND);
-      }
-
-      try {
-        await this.eventsRepository.delete(id);
-        console.log("Evenement suprimer.")
-      } catch (error) {
-        throw new HttpException({ message: 'Error deleting event' }, HttpStatus.INTERNAL_SERVER_ERROR);
-      }
-    
-
-      if (!event) {
-        throw new HttpException({ message: 'Event not found' }, HttpStatus.NOT_FOUND);
-      }
-
-      try {
-        await this.eventsRepository.delete(id);
-      } catch (error) {
-        throw new HttpException({ message: 'Error deleting event' }, HttpStatus.INTERNAL_SERVER_ERROR);
-      }
-
+  async remove(id: string) {
+    const event = await this.eventsRepository.findOneBy({ id });
+    if (!event)
+      throw new HttpException({ message: 'Event not found.' }, HttpStatus.NOT_FOUND);
+    else
+      return await this.eventsRepository.delete({ id });
   }
 }
+
