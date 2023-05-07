@@ -1,10 +1,12 @@
-import { Controller } from '@nestjs/common';
-import { EventPattern } from '@nestjs/microservices';
+import { Controller, Get } from '@nestjs/common';
+import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  @EventPattern('user_created')
-  async handleUserCreated(data: Record<string, unknown>) {
-    // business logic
+  constructor(private readonly appService: AppService) { }
+
+  @Get()
+  isAlive(): Promise<string> {
+    return this.appService.healthCheck();
   }
 }
