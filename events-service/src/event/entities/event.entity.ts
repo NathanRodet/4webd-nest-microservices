@@ -2,22 +2,22 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Event {
-    @PrimaryGeneratedColumn("uuid")
-    id: string;
-    
-    @Column()
-    titre:string;
-  
-    @Column()
-    description: string;
-  
-    @Column()
-    dateDebut: Date;
-    
-    @Column()
-    dateFin: Date;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    ticketsDisponible: number;
+  @Column({ unique: true, nullable: false })
+  titre: string;
+
+  @Column()
+  description: string;
+
+  @Column({ nullable: false })
+  dateDebut: Date;
+
+  @Column({ nullable: false })
+  dateFin: Date;
+
+  @Column({ nullable: false })
+  ticketsDisponible: number;
 }
 export default Event;

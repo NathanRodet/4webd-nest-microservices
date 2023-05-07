@@ -5,23 +5,29 @@ import Event from './entities/event.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
-
 @Injectable()
 export class EventService {
-
   constructor(
     @InjectRepository(Event)
-    private eventsRepository: Repository<Event>
-  ) { }
+    private eventsRepository: Repository<Event>,
+  ) {}
 
-  async create(createEventDto: CreateEventDto): Promise<void> {  
-    if (await this.eventsRepository.findOneBy({}))
-      throw new HttpException({ message: 'Event may already exist' }, HttpStatus.BAD_REQUEST);
+  async create(createEventDto: CreateEventDto): Promise<void> {
+    if (await this.eventsRepository.findOneBy({ titre: createEventDto.titre }))
+      throw new HttpException(
+        { message: 'Event may already exist' },
+        HttpStatus.BAD_REQUEST,
+      );
     try {
-      await this.eventsRepository.save(this.eventsRepository.create(createEventDto))
+      await this.eventsRepository.save(
+        this.eventsRepository.create(createEventDto),
+      );
     } catch (error) {
-      console.log(error)
-      throw new HttpException({ message: 'Error creating event' }, HttpStatus.INTERNAL_SERVER_ERROR);
+      console.log(error);
+      throw new HttpException(
+        { message: 'Error creating event' },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
     }
   }
 
@@ -32,15 +38,20 @@ export class EventService {
   async findOneById(id: string) {
     const event = await this.eventsRepository.findOneBy({ id });
     if (!event)
-      throw new HttpException({ message: 'Event not found.' }, HttpStatus.NOT_FOUND);
-    else
-      return event;
+      throw new HttpException(
+        { message: 'Event not found.' },
+        HttpStatus.NOT_FOUND,
+      );
+    else return event;
   }
 
   async update(id: string, updateEventDto: UpdateEventDto) {
     const event = await this.eventsRepository.findOneBy({ id });
     if (!event)
-      throw new HttpException({ message: 'Event not found.' }, HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        { message: 'Event not found.' },
+        HttpStatus.NOT_FOUND,
+      );
     else {
       const eventData = {
         titre: updateEventDto.titre,
@@ -48,7 +59,7 @@ export class EventService {
         dateDebut: updateEventDto.DateDebut,
         dateFin: updateEventDto.DateFin,
         ticketsDisponible: updateEventDto.ticketsDisponible,
-      }
+      };
       return await this.eventsRepository.update({ id }, eventData);
     }
   }
@@ -56,9 +67,10 @@ export class EventService {
   async remove(id: string) {
     const event = await this.eventsRepository.findOneBy({ id });
     if (!event)
-      throw new HttpException({ message: 'Event not found.' }, HttpStatus.NOT_FOUND);
-    else
-      return await this.eventsRepository.delete({ id });
+      throw new HttpException(
+        { message: 'Event not found.' },
+        HttpStatus.NOT_FOUND,
+      );
+    else return await this.eventsRepository.delete({ id });
   }
 }
-
