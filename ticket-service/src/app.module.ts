@@ -1,12 +1,24 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import config from './ormconfig';
-import { TicketsModule } from './tickets/tickets.module';
+import { TicketsModule } from './tickets/ticket.module';
+import { DataSource } from 'typeorm';
+import { Ticket } from './tickets/entities/ticket.entity';
+
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(config),
-    TicketsModule
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5435,
+      username: 'postgres',
+      password: 'password',
+      database: 'postgres',
+      entities: [Ticket],
+      synchronize: true,
+    }),    TicketsModule
   ],
 })
-export class AppModule {}
+export class AppModule {
+  constructor(private dataSource: DataSource) { }
+}
