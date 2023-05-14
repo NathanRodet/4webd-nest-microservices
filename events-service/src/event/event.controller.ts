@@ -31,4 +31,10 @@ export class EventController {
   remove(@Param('id') id: string) {
     return this.eventService.remove(id);
   }
+  
+  @Get('buy/:id')
+  getLink(@Param('id') id: string) {
+    return this.eventService.getLink(id);
+  }
+  
 }
