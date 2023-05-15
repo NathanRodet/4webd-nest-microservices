@@ -11,10 +11,10 @@ export class CreateEventDto {
   description: string;
 
   @IsNotEmpty()
-  DateDebut: Date;
+  dateDebut: Date;
 
   @IsNotEmpty()
-  DateFin: Date;
+  dateFin: Date;
 
   @IsNotEmpty()
   ticketsDisponible: number;
