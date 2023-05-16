@@ -1,14 +1,14 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
-import { CreateTicketDto } from './dto/create-ticket.dto';
-import { UpdateTicketDto } from './dto/update-ticket.dto';
-
+import { CreateTicketDTO } from './dto/create-ticket.dto';
+import { UpdateTicketDTO } from './dto/update-ticket.dto';
+import { UUID } from './dto/params-ticket.dto';
 @Controller('tickets')
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
   @Post()
-  create(@Body() createTicketDto: CreateTicketDto) {
+  create(@Body() createTicketDto: CreateTicketDTO) {
     return this.ticketsService.create(createTicketDto);
   }
 
@@ -18,17 +18,17 @@ export class TicketsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.ticketsService.findOne(id);
+  findOne(@Param('id') id: UUID) {
+    return this.ticketsService.findOne(id.id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
-    return this.ticketsService.update(id, updateTicketDto);
+  update(@Param('id') id: UUID, @Body() updateTicketDto: UpdateTicketDTO) {
+    return this.ticketsService.update(id.id, updateTicketDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.ticketsService.remove(id);
+  remove(@Param('id') id: UUID) {
+    return this.ticketsService.remove(id.id);
   }
 }

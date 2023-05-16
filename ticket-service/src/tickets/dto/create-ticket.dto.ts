@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsPositive, IsString, Length } from 'class-validator';
+import { IsNotEmpty} from 'class-validator';
 export class CreateTicketDTO {
 
   @IsNotEmpty()
