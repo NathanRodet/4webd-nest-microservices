@@ -3,6 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TicketsModule } from './tickets/ticket.module';
 import { DataSource } from 'typeorm';
 import { Ticket } from './tickets/entities/ticket.entity';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 
 @Module({
@@ -16,8 +18,10 @@ import { Ticket } from './tickets/entities/ticket.entity';
       database: 'postgres',
       entities: [Ticket],
       synchronize: true,
-    }),    TicketsModule
+    }), TicketsModule
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {
   constructor(private dataSource: DataSource) { }

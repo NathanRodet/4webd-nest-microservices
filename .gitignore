@@ -2,6 +2,8 @@
 /dist
 /node_modules
 /database/users-service/data
+/database/ticket-service/data
+/database/events-service/data
 
 # Logs
 logs

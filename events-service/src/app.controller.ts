@@ -7,7 +7,7 @@ export class AppController {
   constructor(private readonly appService: AppService) { }
 
   @Get()
-  async findAllUser(): Promise<void> {
+  isAlive(): Promise<string> {
     return this.appService.healthCheck();
   }
 
