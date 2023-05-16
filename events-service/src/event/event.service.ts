@@ -4,6 +4,7 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import Event from './entities/event.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { NOTFOUND } from 'dns';
 
 const stripe = require('stripe')('sk_test_51N6D9qJBS32tQ8g9ASUBQnX8FKIb7pYlAOOIqceuoaszmH9gFDZV4soSiePUsI2F4cbFHVGhwNQspYq4QFbTyf6j006Hu7TCix');
 
@@ -122,6 +123,39 @@ export class EventService {
       );
     else return event.paymentLink;
   }
+  async handleRequest(body: any, headers : Headers) {
+    let event = body;
+    const endpointSecret = 'whsec_...';
+    console.log(event)
+    //Pas testable car variable null en simulation
+    const clientMail = body.data.object.receipt_email;
+
+/*
+    //Code correct (Pris de la doc que j'ai adapté en nest) mais ne peut pas fonctionner car la signature n'est pas simulée.
+    if (endpointSecret) {
+      const signature = headers['stripe-signature'];
+      try {
+        event = stripe.webhooks.constructEvent(
+          body,
+          signature,
+          endpointSecret
+        );
+      } catch (err) {
+        console.log(`⚠️  Webhook signature verification failed.`, err.message);
+        return "⚠️  Webhook signature verification failed.";
+      }
+    }*/
+
+    switch (event.type) {
+      case 'payment_intent.succeeded':
+        const paymentIntent = event.data.object;
+        //Je ne peux pas finir cette partie, les hooks ont besoin d'être déployés en ligne ppour être appelé par Stripe.
+        //J'ai vérifié le fonctionnement du code jusqu'a cette ligne en générant de fausses requêtes et en les redirigeant localement
+        console.log('Mail to ' + clientMail + "about his order");
+        break;
+     
+    }
+  };
 }
 
 

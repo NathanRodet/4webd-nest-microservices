@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpCode, Headers, HttpStatus } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import stripe from 'stripe';
 
 @Controller('event')
 export class EventController {
@@ -36,5 +37,9 @@ export class EventController {
   getLink(@Param('id') id: string) {
     return this.eventService.getLink(id);
   }
-  
+  @Post('hook')
+  @HttpCode(HttpStatus.OK)
+  async handleRequest(@Body() body :any, @Headers() headers) {
+    return this.eventService.handleRequest(body, headers);
+  }
 }
