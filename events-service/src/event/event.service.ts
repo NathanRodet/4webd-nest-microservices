@@ -81,6 +81,12 @@ export class EventService {
 
 
   async update(id: string, updateEventDto: UpdateEventDto) {
+    if (Object.keys(updateEventDto).length == 0)
+      throw new HttpException(
+        { message: 'Cannot update event with null data.' },
+        HttpStatus.BAD_REQUEST,
+      );
+
     const event = await this.eventsRepository.findOneBy({ id });
     if (!event)
       throw new HttpException(
@@ -118,7 +124,7 @@ export class EventService {
   }
   async handleRequest(body: any, headers: Headers) {
     let event = body;
-    const endpointSecret = 'whsec_...';
+    // const endpointSecret = 'whsec_...';
     console.log(event)
     //Pas testable car variable null en simulation
     const clientMail = body.data.object.receipt_email;
@@ -141,7 +147,7 @@ export class EventService {
 
     switch (event.type) {
       case 'payment_intent.succeeded':
-        const paymentIntent = event.data.object;
+        // const paymentIntent = event.data.object;
         //Je ne peux pas finir cette partie, les hooks ont besoin d'être déployés en ligne ppour être appelé par Stripe.
         //J'ai vérifié le fonctionnement du code jusqu'a cette ligne en générant de fausses requêtes et en les redirigeant localement
         console.log('Mail to ' + clientMail + "about his order");

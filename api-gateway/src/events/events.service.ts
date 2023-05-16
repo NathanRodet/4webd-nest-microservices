@@ -2,7 +2,6 @@ import { Injectable, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
-import { Event } from './entities/event.entity';
 
 @Injectable()
 export class EventsService {
@@ -66,7 +65,7 @@ export class EventsService {
 
 
 
-  async remove(id: String): Promise<EventsService> {
+  async remove(id: string): Promise<EventsService> {
     const { data } = await firstValueFrom(
       this.httpService.delete(`${this.eventsBaseUrl}/${id}`).pipe(
         catchError((error: AxiosError) => {

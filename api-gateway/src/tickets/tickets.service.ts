@@ -68,7 +68,7 @@ export class TicketsService {
 
 
 
-  async remove(id: String): Promise<TicketsService> {
+  async remove(id: string): Promise<TicketsService> {
     const { data } = await firstValueFrom(
       this.httpService.delete(`${this.ticketsBaseUrl}/${id}`).pipe(
         catchError((error: AxiosError) => {

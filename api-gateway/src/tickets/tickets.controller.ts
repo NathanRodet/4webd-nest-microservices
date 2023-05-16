@@ -3,6 +3,7 @@ import { TicketsService } from './tickets.service';
 import { CreateTicketDTO } from './dto/create-ticket.dto';
 import { UpdateTicketDTO } from './dto/update-ticket.dto';
 import { UUID } from './dto/params-ticket.dto';
+
 @Controller('tickets')
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) { }

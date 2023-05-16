@@ -1,12 +1,12 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TicketsService } from './ticket.service';
-import { CreateTicketDTO} from './dto/create-ticket.dto';
+import { CreateTicketDTO } from './dto/create-ticket.dto';
 import { UpdateTicketDTO } from './dto/update-ticket.dto';
 import { UUID } from './dto/params-ticket.dto';
 
 @Controller('tickets')
 export class TicketController {
-  constructor(private readonly ticketService: TicketsService) {}
+  constructor(private readonly ticketService: TicketsService) { }
 
   @Get()
   findAll() {

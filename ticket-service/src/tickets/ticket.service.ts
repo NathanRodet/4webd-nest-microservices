@@ -7,6 +7,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UUID } from './dto/params-ticket.dto';
 
 
+
 @Injectable()
 export class TicketsService {
     constructor(
@@ -43,6 +44,12 @@ export class TicketsService {
     }
 
     async updateTicket(id: UUID, updateTicketDTO: UpdateTicketDTO) {
+        if (Object.keys(updateTicketDTO).length == 0)
+            throw new HttpException(
+                { message: 'Cannot update ticket with null data.' },
+                HttpStatus.BAD_REQUEST,
+            );
+
         const ticket = await this.ticketsRepository.findOne({ where: { id: id.id } });
         if (ticket) {
             ticket.userId = updateTicketDTO.userId;
@@ -51,12 +58,15 @@ export class TicketsService {
             return await this.ticketsRepository.save(ticket);
         }
         else {
-            console.log("ticket not found");
+            console.log("Ticket not found");
         }
         return null;
     }
     async deleteTicket(id: UUID) {
         const ticket = await this.ticketsRepository.findOne({ where: { id: id.id } });
+        if (!ticket)
+            throw new HttpException({ message: 'Ticket not found.' }, HttpStatus.NOT_FOUND);
+
         return await this.ticketsRepository.remove(ticket);
     }
 }  
