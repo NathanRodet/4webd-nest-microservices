@@ -4,6 +4,8 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import Event from './entities/event.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UUID } from './dto/params-event.dto';
+import { IsUUID } from 'class-validator';
 
 @Injectable()
 export class EventService {
@@ -37,13 +39,12 @@ export class EventService {
 
   async findOneById(id: string) {
     const event = await this.eventsRepository.findOneBy({ id });
-    if (!event)
-      throw new HttpException(
-        { message: 'Event not found.' },
-        HttpStatus.NOT_FOUND,
-      );
-    else return event;
+    if (!event) 
+      throw new HttpException({ message: 'Event not found.' }, HttpStatus.NOT_FOUND,);
+    else 
+      return event;
   }
+    
 
   async update(id: string, updateEventDto: UpdateEventDto) {
     const event = await this.eventsRepository.findOneBy({ id });
@@ -56,8 +57,8 @@ export class EventService {
       const eventData = {
         titre: updateEventDto.titre,
         description: updateEventDto.description,
-        dateDebut: updateEventDto.DateDebut,
-        dateFin: updateEventDto.DateFin,
+        dateDebut: updateEventDto.dateDebut,
+        dateFin: updateEventDto.dateFin,
         ticketsDisponible: updateEventDto.ticketsDisponible,
       };
       return await this.eventsRepository.update({ id }, eventData);
@@ -67,10 +68,7 @@ export class EventService {
   async remove(id: string) {
     const event = await this.eventsRepository.findOneBy({ id });
     if (!event)
-      throw new HttpException(
-        { message: 'Event not found.' },
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException({ message: 'Event not found.' },HttpStatus.NOT_FOUND,);
     else return await this.eventsRepository.delete({ id });
   }
 }

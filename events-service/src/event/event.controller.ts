@@ -2,33 +2,34 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { UUID } from './dto/params-event.dto';
 
 @Controller('event')
 export class EventController {
   constructor(private readonly eventService: EventService) {}
 
   @Post()
-  create(@Body() createEventDto: CreateEventDto) {
+  async create(@Body() createEventDto: CreateEventDto) {
     return this.eventService.create(createEventDto);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.eventService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.eventService.findOneById(id);
+  async findOneById(@Param() id: UUID) {
+    return this.eventService.findOneById(id.id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEventDto: UpdateEventDto) {
-    return this.eventService.update(id, updateEventDto);
+  async update(@Param() id: UUID, @Body() updateEventDto: UpdateEventDto) {
+    return this.eventService.update(id.id, updateEventDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.eventService.remove(id);
+  async remove(@Param() id: UUID) {
+    return this.eventService.remove(id.id);
   }
 }

@@ -4,7 +4,7 @@ import { CreateEventDto } from './create-event.dto';
 export class UpdateEventDto extends PartialType(CreateEventDto) {
   titre?: string;
   description?: string;
-  DateDebut?: Date;
-  DateFin?: Date;
+  dateDebut?: Date;
+  dateFin?: Date;
   ticketsDisponible?: number;
 }
