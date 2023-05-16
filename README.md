@@ -35,6 +35,8 @@ We used a Role Based Access Control (RBAC) with 2 roles 'USER' and 'ADMIN' and d
 Documentation is present in README.MD and the `documentations` folder.
 The file contains the Postman endpoints for each services and the API gateway and prefilled mock data.
 
+Please ensure to set a bearer token generated with the login endpoint if you get forbidden.
+
 ## How to start ?
 
 Start all microservices database using `docker compose up -d` or `docker compose up` for logs.
