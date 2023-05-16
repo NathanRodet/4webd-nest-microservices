@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsPositive, IsString, IsUrl, Length } from 'class-validator';
+import { IsNotEmpty, IsString, Length } from 'class-validator';
 export class CreateEventDto {
 
   @IsNotEmpty()
@@ -18,13 +18,5 @@ export class CreateEventDto {
 
   @IsNotEmpty()
   ticketsDisponible: number;
-
-  @IsNotEmpty()
-  @IsPositive()
-  price: number;
-
-  @IsNotEmpty()
-  @IsUrl()
-  paymentLink: string;
 
 }

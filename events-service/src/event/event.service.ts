@@ -5,7 +5,8 @@ import Event from './entities/event.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { NOTFOUND } from 'dns';
-
+import { UUID } from './dto/params-event.dto';
+import { IsUUID } from 'class-validator';
 const stripe = require('stripe')('sk_test_51N6D9qJBS32tQ8g9ASUBQnX8FKIb7pYlAOOIqceuoaszmH9gFDZV4soSiePUsI2F4cbFHVGhwNQspYq4QFbTyf6j006Hu7TCix');
 
 async function create_product(nom, price) {
@@ -35,7 +36,6 @@ async function getPaymentLink(priceId) {
     console.error(err);
   }
 }
-
 
 @Injectable()
 export class EventService {
@@ -76,13 +76,12 @@ export class EventService {
 
   async findOneById(id: string) {
     const event = await this.eventsRepository.findOneBy({ id });
-    if (!event)
-      throw new HttpException(
-        { message: 'Event not found.' },
-        HttpStatus.NOT_FOUND,
-      );
-    else return event;
+    if (!event) 
+      throw new HttpException({ message: 'Event not found.' }, HttpStatus.NOT_FOUND,);
+    else 
+      return event;
   }
+    
 
   async update(id: string, updateEventDto: UpdateEventDto) {
     const event = await this.eventsRepository.findOneBy({ id });
@@ -95,8 +94,8 @@ export class EventService {
       const eventData = {
         titre: updateEventDto.titre,
         description: updateEventDto.description,
-        dateDebut: updateEventDto.DateDebut,
-        dateFin: updateEventDto.DateFin,
+        dateDebut: updateEventDto.dateDebut,
+        dateFin: updateEventDto.dateFin,
         ticketsDisponible: updateEventDto.ticketsDisponible,
         price: updateEventDto.price,
         paymentLink: updateEventDto.paymentLink
@@ -108,10 +107,7 @@ export class EventService {
   async remove(id: string) {
     const event = await this.eventsRepository.findOneBy({ id });
     if (!event)
-      throw new HttpException(
-        { message: 'Event not found.' },
-        HttpStatus.NOT_FOUND,
-      );
+      throw new HttpException({ message: 'Event not found.' },HttpStatus.NOT_FOUND,);
     else return await this.eventsRepository.delete({ id });
   }
   async getLink(id: string) {
