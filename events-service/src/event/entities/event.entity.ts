@@ -19,5 +19,13 @@ export class Event {
 
   @Column({ nullable: false })
   ticketsDisponible: number;
+
+  @Column({ nullable: false })
+  price: number;
+
+  @Column({ nullable: false })
+  paymentLink: string;
+
+
 }
 export default Event;

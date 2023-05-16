@@ -7,4 +7,7 @@ export class UpdateEventDto extends PartialType(CreateEventDto) {
   dateDebut?: Date;
   dateFin?: Date;
   ticketsDisponible?: number;
+  price?: number;
+  paymentLink?: string;
+
 }
