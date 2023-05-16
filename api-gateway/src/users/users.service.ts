@@ -3,6 +3,8 @@ import { HttpService } from '@nestjs/axios';
 import { catchError, firstValueFrom } from 'rxjs';
 import { AxiosError } from 'axios';
 import { CreateUserDto } from './dto/create-user.dto';
+import { DecodeToken } from '../auth/utils/jwt';
+import { Token } from '../auth/dto/auth.dto';
 
 @Injectable()
 export class UsersService {
@@ -48,7 +50,13 @@ export class UsersService {
   }
 
 
-  async findOne(id: string): Promise<UsersService> {
+  async findOne(id: string, headers): Promise<UsersService> {
+    const token: Token = await headers.authorization.split(' ')[1];
+    const decoded = await DecodeToken(token);
+
+    if (decoded.role !== 'admin' && decoded.id !== id)
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+
     const { data } = await firstValueFrom(
       this.httpService.get(`${this.usersBaseURL}/${id}`).pipe(
         catchError((error: AxiosError) => {
@@ -64,7 +72,12 @@ export class UsersService {
   }
 
 
-  async update(id: string, UserData: any): Promise<UsersService> {
+  async update(id: string, UserData: any, headers: { authorization: { split: (arg0: string) => (Token | PromiseLike<Token>)[]; }; }): Promise<UsersService> {
+    const token: Token = await headers.authorization.split(' ')[1];
+    const decoded = await DecodeToken(token);
+
+    if (decoded.role !== 'admin' && decoded.id !== id)
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
 
     const { data } = await firstValueFrom(
       this.httpService.patch(`${this.usersBaseURL}/${id}`, UserData).pipe(
@@ -83,7 +96,13 @@ export class UsersService {
 
 
 
-  async remove(id: string): Promise<UsersService> {
+  async remove(id: string, headers): Promise<UsersService> {
+    const token: Token = await headers.authorization.split(' ')[1];
+    const decoded = await DecodeToken(token);
+
+    if (decoded.role !== 'admin' && decoded.id !== id)
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+
     const { data } = await firstValueFrom(
       this.httpService.delete(`${this.usersBaseURL}/${id}`).pipe(
         catchError((error: AxiosError) => {
@@ -98,7 +117,14 @@ export class UsersService {
     return data;
   }
 
-  async findAll(): Promise<UsersService> {
+  async findAll(headers): Promise<UsersService> {
+    const token: Token = await headers.authorization.split(' ')[1];
+    const decoded = await DecodeToken(token);
+
+    if (decoded.role !== 'admin')
+      throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+
+
     const { data } = await firstValueFrom(
       this.httpService.get(this.usersBaseURL).pipe(
         catchError((error: AxiosError) => {

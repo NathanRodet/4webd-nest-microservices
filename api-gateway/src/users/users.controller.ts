@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Headers, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordUserDto } from './dto/update-user.dto';
@@ -17,24 +17,27 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
-    return this.usersService.findAll();
+  @Roles(Role.ADMIN)
+  findAll(@Headers() headers: any) {
+    return this.usersService.findAll(headers);
   }
 
   @Get(':id')
   @Roles(Role.ADMIN, Role.USER)
-  findOne(@Param() id: UUID) {
-    return this.usersService.findOne(id.id);
+  findOne(@Param() id: UUID, @Headers() headers: any) {
+    return this.usersService.findOne(id.id, headers);
   }
 
   @Patch(':id')
-  update(@Param() id: UUID, @Body() UpdatePasswordUserDto: UpdatePasswordUserDto) {
-    return this.usersService.update(id.id, UpdatePasswordUserDto);
+  @Roles(Role.ADMIN, Role.USER)
+  update(@Param() id: UUID, @Body() UpdatePasswordUserDto: UpdatePasswordUserDto, @Headers() headers: any) {
+    return this.usersService.update(id.id, UpdatePasswordUserDto, headers);
   }
 
   @Delete(':id')
-  remove(@Param() id: UUID) {
-    return this.usersService.remove(id.id);
+  @Roles(Role.ADMIN, Role.USER)
+  remove(@Param() id: UUID, @Headers() headers: any) {
+    return this.usersService.remove(id.id, headers);
   }
 }
 

@@ -5,7 +5,7 @@ import { AxiosError } from 'axios';
 
 @Injectable()
 export class TicketsService {
-  private ticketsBaseUrl = 'http://localhost:3004/ticket';
+  private ticketsBaseUrl = 'http://localhost:3004/tickets';
   private readonly logger = new Logger(TicketsService.name);
 
   constructor(private httpService: HttpService) { }
@@ -66,6 +66,7 @@ export class TicketsService {
 
 
   async remove(id: string): Promise<TicketsService> {
+
     const { data } = await firstValueFrom(
       this.httpService.delete(`${this.ticketsBaseUrl}/${id}`).pipe(
         catchError((error: AxiosError) => {

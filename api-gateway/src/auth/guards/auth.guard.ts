@@ -11,8 +11,7 @@ export class RolesGuard implements CanActivate {
     // Find the required roles from the route handler and class
     const requiredRoles = this.reflector.getAllAndOverride<Role[]>('roles', [context.getHandler(), context.getClass()]);
     const authorizationHeader = context.switchToHttp().getRequest().headers.authorization;
-    console.log(authorizationHeader)
-    console.log(requiredRoles)
+
     // Check if roles needed
     if (!requiredRoles) {
       return true;

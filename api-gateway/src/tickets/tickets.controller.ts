@@ -1,14 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Headers, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDTO } from './dto/create-ticket.dto';
 import { UpdateTicketDTO } from './dto/update-ticket.dto';
 import { UUID } from './dto/params-ticket.dto';
+import { Roles } from '../auth/guards/auth.decorator';
+import { Role } from '../auth/guards/auth.enum';
 
 @Controller('tickets')
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) { }
 
   @Post()
+  @Roles(Role.USER)
   create(@Body() createTicketDto: CreateTicketDTO) {
     return this.ticketsService.create(createTicketDto);
   }
@@ -24,12 +27,14 @@ export class TicketsController {
   }
 
   @Patch(':id')
-  update(@Param() id: UUID, @Body() updateTicketDto: UpdateTicketDTO) {
+  @Roles(Role.ADMIN)
+  update(@Param() id: UUID, @Body() updateTicketDto: UpdateTicketDTO, @Headers() headers: any) {
     return this.ticketsService.update(id.id, updateTicketDto);
   }
 
   @Delete(':id')
-  remove(@Param() id: UUID) {
+  @Roles(Role.ADMIN)
+  remove(@Param() id: UUID, @Headers() headers: any) {
     return this.ticketsService.remove(id.id);
   }
 }
