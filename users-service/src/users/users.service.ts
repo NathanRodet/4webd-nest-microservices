@@ -5,6 +5,7 @@ import { UpdatePasswordUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { LoginAuthDto } from './dto/auth.dto';
 
 @Injectable()
 export class UsersService {
@@ -12,6 +13,23 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) { }
+
+  async login(loginData: LoginAuthDto) {
+    const user = await this.usersRepository.findOne({ where: { email: loginData.email }, select: ['id', 'password', 'role'] });
+    if (!user)
+      throw new HttpException({ message: 'User not found.' }, HttpStatus.NOT_FOUND);
+
+    const passwordMatch = await argon2.verify(user.password, loginData.password);
+    if (!passwordMatch)
+      throw new HttpException({ message: 'Invalid password.' }, HttpStatus.BAD_REQUEST);
+
+    const tokenData = {
+      id: user.id,
+      role: user.role,
+    }
+
+    return tokenData;
+  }
 
   async create(createUserDto: CreateUserDto) {
     const user = await this.usersRepository.findOneBy({ email: createUserDto.email });

@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordUserDto } from './dto/update-user.dto';
 import { UUID } from './dto/params-user.dto';
+import { LoginAuthDto } from './dto/auth.dto';
 
 @Controller('users')
 export class UsersController {
@@ -41,6 +42,17 @@ export class AdminController {
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.createAdmin(createUserDto);
+  }
+
+}
+
+@Controller('auth')
+export class LoginController {
+  constructor(private readonly usersService: UsersService) { }
+
+  @Post()
+  async login(@Body() loginData: LoginAuthDto) {
+    return this.usersService.login(loginData);
   }
 
 }

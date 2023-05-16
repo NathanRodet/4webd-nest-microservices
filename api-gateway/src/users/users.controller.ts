@@ -3,6 +3,9 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdatePasswordUserDto } from './dto/update-user.dto';
 import { UUID } from './dto/params-user.dto';
+import { Roles } from '../auth/guards/auth.decorator';
+import { Role } from '../auth/guards/auth.enum';
+
 
 @Controller('users')
 export class UsersController {
@@ -19,6 +22,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  @Roles(Role.ADMIN, Role.USER)
   findOne(@Param() id: UUID) {
     return this.usersService.findOne(id.id);
   }

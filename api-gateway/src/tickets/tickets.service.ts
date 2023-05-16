@@ -10,7 +10,6 @@ export class TicketsService {
 
   constructor(private httpService: HttpService) { }
 
-
   async create(ticketData: any): Promise<TicketsService> {
 
     const { data } = await firstValueFrom(
@@ -26,8 +25,6 @@ export class TicketsService {
       ),
     );
     return data;
-
-
 
   }
 
