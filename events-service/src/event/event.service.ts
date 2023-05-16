@@ -4,9 +4,6 @@ import { UpdateEventDto } from './dto/update-event.dto';
 import Event from './entities/event.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { NOTFOUND } from 'dns';
-import { UUID } from './dto/params-event.dto';
-import { IsUUID } from 'class-validator';
 const stripe = require('stripe')('sk_test_51N6D9qJBS32tQ8g9ASUBQnX8FKIb7pYlAOOIqceuoaszmH9gFDZV4soSiePUsI2F4cbFHVGhwNQspYq4QFbTyf6j006Hu7TCix');
 
 async function create_product(nom, price) {
@@ -76,12 +73,12 @@ export class EventService {
 
   async findOneById(id: string) {
     const event = await this.eventsRepository.findOneBy({ id });
-    if (!event) 
+    if (!event)
       throw new HttpException({ message: 'Event not found.' }, HttpStatus.NOT_FOUND,);
-    else 
+    else
       return event;
   }
-    
+
 
   async update(id: string, updateEventDto: UpdateEventDto) {
     const event = await this.eventsRepository.findOneBy({ id });
@@ -107,7 +104,7 @@ export class EventService {
   async remove(id: string) {
     const event = await this.eventsRepository.findOneBy({ id });
     if (!event)
-      throw new HttpException({ message: 'Event not found.' },HttpStatus.NOT_FOUND,);
+      throw new HttpException({ message: 'Event not found.' }, HttpStatus.NOT_FOUND,);
     else return await this.eventsRepository.delete({ id });
   }
   async getLink(id: string) {
@@ -119,28 +116,28 @@ export class EventService {
       );
     else return event.paymentLink;
   }
-  async handleRequest(body: any, headers : Headers) {
+  async handleRequest(body: any, headers: Headers) {
     let event = body;
     const endpointSecret = 'whsec_...';
     console.log(event)
     //Pas testable car variable null en simulation
     const clientMail = body.data.object.receipt_email;
 
-/*
-    //Code correct (Pris de la doc que j'ai adapté en nest) mais ne peut pas fonctionner car la signature n'est pas simulée.
-    if (endpointSecret) {
-      const signature = headers['stripe-signature'];
-      try {
-        event = stripe.webhooks.constructEvent(
-          body,
-          signature,
-          endpointSecret
-        );
-      } catch (err) {
-        console.log(`⚠️  Webhook signature verification failed.`, err.message);
-        return "⚠️  Webhook signature verification failed.";
-      }
-    }*/
+    /*
+        //Code correct (Pris de la doc que j'ai adapté en nest) mais ne peut pas fonctionner car la signature n'est pas simulée.
+        if (endpointSecret) {
+          const signature = headers['stripe-signature'];
+          try {
+            event = stripe.webhooks.constructEvent(
+              body,
+              signature,
+              endpointSecret
+            );
+          } catch (err) {
+            console.log(`⚠️  Webhook signature verification failed.`, err.message);
+            return "⚠️  Webhook signature verification failed.";
+          }
+        }*/
 
     switch (event.type) {
       case 'payment_intent.succeeded':
@@ -149,7 +146,7 @@ export class EventService {
         //J'ai vérifié le fonctionnement du code jusqu'a cette ligne en générant de fausses requêtes et en les redirigeant localement
         console.log('Mail to ' + clientMail + "about his order");
         break;
-     
+
     }
   };
 }

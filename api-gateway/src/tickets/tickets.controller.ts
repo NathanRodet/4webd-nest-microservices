@@ -5,7 +5,7 @@ import { UpdateTicketDTO } from './dto/update-ticket.dto';
 import { UUID } from './dto/params-ticket.dto';
 @Controller('tickets')
 export class TicketsController {
-  constructor(private readonly ticketsService: TicketsService) {}
+  constructor(private readonly ticketsService: TicketsService) { }
 
   @Post()
   create(@Body() createTicketDto: CreateTicketDTO) {
@@ -18,17 +18,17 @@ export class TicketsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: UUID) {
+  findOne(@Param() id: UUID) {
     return this.ticketsService.findOne(id.id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: UUID, @Body() updateTicketDto: UpdateTicketDTO) {
+  update(@Param() id: UUID, @Body() updateTicketDto: UpdateTicketDTO) {
     return this.ticketsService.update(id.id, updateTicketDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: UUID) {
+  remove(@Param() id: UUID) {
     return this.ticketsService.remove(id.id);
   }
 }

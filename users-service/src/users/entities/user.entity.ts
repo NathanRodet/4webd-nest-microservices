@@ -18,6 +18,6 @@ export class User {
   @Column({ nullable: false, select: false })
   password: string;
 
-  @Column({ default: false })
-  is_admin: boolean;
+  @Column({ default: "USER" })
+  role: string;
 }

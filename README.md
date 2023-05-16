@@ -26,6 +26,10 @@ Then, doing loadbalancing with NGINX for each of the services would be an effici
 Only API gateway endpoints should be accessible from the public.
 The microservices should be protected in a different network and accessed with certificate or secrets.
 
+The API endpoint 'admin' for the users service is just here because this is a fake project.
+
+We used a Role Based Access Control (RBAC) with 2 roles 'USER' and 'ADMIN' and decorators on endpoint to chose access.
+
 ### Documentation
 
 Documentation is present in README.MD and the `documentations` folder.

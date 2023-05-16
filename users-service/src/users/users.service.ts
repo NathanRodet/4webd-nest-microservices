@@ -28,6 +28,22 @@ export class UsersService {
     }
   }
 
+  async createAdmin(createUserDto: CreateUserDto) {
+    const user = await this.usersRepository.findOneBy({ email: createUserDto.email });
+    if (user)
+      throw new HttpException({ message: 'Email already registered.' }, HttpStatus.NOT_FOUND);
+    else {
+      const userData = {
+        first_name: createUserDto.first_name,
+        last_name: createUserDto.last_name,
+        email: createUserDto.email,
+        password: await argon2.hash(createUserDto.password),
+        role: 'ADMIN',
+      }
+      return await this.usersRepository.save(this.usersRepository.create(userData));
+    }
+  }
+
   async findAll() {
     return await this.usersRepository.find();
   }

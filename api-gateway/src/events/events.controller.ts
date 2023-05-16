@@ -6,7 +6,7 @@ import { UUID } from './dto/params-event.dto';
 
 @Controller('events')
 export class EventsController {
-  constructor(private readonly eventsService: EventsService) {}
+  constructor(private readonly eventsService: EventsService) { }
 
   @Post()
   create(@Body() createEventDto: CreateEventDto) {
@@ -19,17 +19,17 @@ export class EventsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: UUID) {
+  findOne(@Param() id: UUID) {
     return this.eventsService.findOne(id.id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: UUID, @Body() updateEventDto: UpdateEventDto) {
+  update(@Param() id: UUID, @Body() updateEventDto: UpdateEventDto) {
     return this.eventsService.update(id.id, updateEventDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: UUID) {
+  remove(@Param() id: UUID) {
     return this.eventsService.remove(id.id);
   }
 }

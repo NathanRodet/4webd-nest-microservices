@@ -33,3 +33,14 @@ export class UsersController {
     return this.usersService.remove(id.id);
   }
 }
+
+@Controller('admin')
+export class AdminController {
+  constructor(private readonly usersService: UsersService) { }
+
+  @Post()
+  async create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.createAdmin(createUserDto);
+  }
+
+}

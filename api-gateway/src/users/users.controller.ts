@@ -6,7 +6,7 @@ import { UUID } from './dto/params-user.dto';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
@@ -19,17 +19,29 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: UUID) {
+  findOne(@Param() id: UUID) {
     return this.usersService.findOne(id.id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: UUID, @Body() UpdatePasswordUserDto: UpdatePasswordUserDto) {
+  update(@Param() id: UUID, @Body() UpdatePasswordUserDto: UpdatePasswordUserDto) {
     return this.usersService.update(id.id, UpdatePasswordUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: UUID) {
+  remove(@Param() id: UUID) {
     return this.usersService.remove(id.id);
   }
+}
+
+
+@Controller('admin')
+export class AdminController {
+  constructor(private readonly usersService: UsersService) { }
+
+  @Post()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.createAdmin(createUserDto);
+  }
+
 }
