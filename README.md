@@ -1,4 +1,4 @@
-# Supinfo 4WEBD
+# Project
 
 - Rudy Turpin
 - Enguerrand Harmel
